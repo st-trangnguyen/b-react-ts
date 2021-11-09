@@ -1,7 +1,7 @@
-import Login from './containers/Login';
-import Register from './containers/Register';
+import Login from './childrens/Login';
+import Register from './childrens/Register';
 import Auth from './Auth';
-import { PageRoute } from '../modules/custom-router-dom/router.interface';
+import { PageRoute } from '../core/modules/custom-router-dom/router.interface';
 
 const authRoutes: PageRoute[] = [
   {

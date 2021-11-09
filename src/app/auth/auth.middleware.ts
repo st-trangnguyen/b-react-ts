@@ -1,7 +1,8 @@
 import { AnyAction } from 'redux';
 import { put, takeLatest } from 'redux-saga/effects';
+
 import ACTION_TYPES from '@core/constants/types';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../core/services/auth.service';
 import { signInSuccess, signInError } from './auth.actions';
 
 const auth = new AuthService();

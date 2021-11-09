@@ -1,7 +1,8 @@
+import ArticleDetail from './childrens/ArticleDetail';
+import ArticleList from './childrens/ArticleList';
+import Articles from './Articles';
+
 import { PageRoute } from '@core/modules/custom-router-dom/router.interface';
-import ArticleDetail from './containers/ArticleDetail';
-import ArticleList from './containers/ArticleList';
-import Articles from './containers/Articles';
 
 const articleRoutes: PageRoute[] = [
   {
