@@ -16,30 +16,20 @@ Các thành phần cơ bản của 1 unit test là : Test suit, Block test, Test
 
 ### TEST CASE ĐỂ KIỂM TRA MẢNG TĂNG DẦN
 
-0. Case 0
-- Input: []
-- Output: false
-
-1. Case 1
-- Input: ['1', '2', '3', '4', '5']
-- Output: false
-
-2. Case 2
-- Input: ['1', 2, 3, 4, 5]
-- Output: false
-
-3. Case 3
-- Input: [1, 1, 1, 1, 1]
-- Output: false
-
-4. Case 4
-- Input: [5, 4, 3, 2, 1]
-- Output: false
-
-5. Case 5
-- Input: [1, 2, 3, 4, 5]
-- Output: true
-
-6. Case 6
-- Input: [5, 4, 3, 2, 1].sort((a, b) => a - b)
-- Output: true
+| Input    | Output |
+| -------- | ------- |
+| 'abc'  | false    |
+| 123 | false     |
+| null    | false    |
+| undefine    | false    |
+| {}    | false    |
+| []    | false    |
+| [1]    | false    |
+| ['1', 2]    | false    |
+| [null, 2]    | false    |
+| [undefined, 2]    | false    |
+| [[], 1, 2, 3]    | false    |
+| [2, 1]    | false    |
+| [1.5, 2, 1]    | false    |
+| [1, 2, 3]    | true    |
+| [1, 1.5, 2]    | true    |
