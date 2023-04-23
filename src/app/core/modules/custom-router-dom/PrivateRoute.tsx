@@ -7,6 +7,5 @@ function isAuthenticated(): boolean {
 }
 
 export function privateRoute(Wrapped) {
-  console.log('privateRoute');
   return (props) => isAuthenticated() ? <Wrapped /> : <Navigate to="/auth/login" />;
 }
