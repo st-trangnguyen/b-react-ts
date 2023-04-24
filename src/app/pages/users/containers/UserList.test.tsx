@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import '@testing-library/jest-dom';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -244,33 +244,28 @@ const dummyData = [
   ]
 ];
 
-const server = setupServer();
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
-
 describe('User List', () => {
-  const userListTmp = (
-    <Provider store={store}>
-      <UserList />
-    </Provider>
-  );
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
 
-  test('Display empty when fetch error', async () => {
-    server.use(
-      rest.get('users', (req, res, ctx) => {
-        return res(ctx.status(400));
-      })
-    );
-    render(userListTmp, { wrapper: BrowserRouter });
-    await waitFor(() => {
-      expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
-    });
-    await waitFor(() => {
-      expect(screen.getByRole('listitem')).not.toBeInTheDocument();
-    });
-  });
+  const server = setupServer();
+
+  const renderWithProviders = (
+    ui: React.ReactElement
+  ) => {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const Wrapper = ({ children }: PropsWithChildren<{}>): JSX.Element => {
+      return (
+        <Provider store={store}>
+          <BrowserRouter>{children}</BrowserRouter>
+        </Provider>
+      );
+    };
+  
+    // Return an object with the store and all of RTL's query functions
+    return { store, ...render(ui, { wrapper: Wrapper }) };
+  };
 
   test('Display loading screen while fetching users', () => {
     server.use(
@@ -281,7 +276,7 @@ describe('User List', () => {
       })
     );
   
-    render(userListTmp, { wrapper: BrowserRouter });
+    renderWithProviders(<UserList />);
     
     expect(screen.getByRole('heading')).toHaveTextContent('User List');
     expect(screen.getByTestId('loading')).toBeInTheDocument();
@@ -296,7 +291,7 @@ describe('User List', () => {
       })
     );
 
-    render(userListTmp, { wrapper: BrowserRouter });
+    renderWithProviders(<UserList />);
 
     await waitFor(() => {
       expect(screen.getByRole('list')).toBeInTheDocument();
@@ -324,8 +319,23 @@ describe('User List', () => {
     ]);
   });
 
+  test('Display empty when fetch error', async () => {
+    server.use(
+      rest.get('users', (req, res, ctx) => {
+        return res(ctx.status(400));
+      })
+    );
+    renderWithProviders(<UserList />);
+    await waitFor(() => {
+      expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByRole('listitem')).not.toBeInTheDocument();
+    });
+  });
+
   // test('Click on user item', async () => {
-  //   render(userListTmp, { wrapper: BrowserRouter });
+  //   render(<UserList />, { wrapper: BrowserRouter });
 
   //   await waitFor(() => {
   //     expect(screen.getByRole('list')).toBeInTheDocument();
@@ -335,5 +345,6 @@ describe('User List', () => {
   //   await waitFor(() => {
   //     expect(screen.getByText('User Detail')).toBeInTheDocument();
   //   });
+  //   expect(screen.getByText('User Detail')).toBeInTheDocument();
   // });
 });
